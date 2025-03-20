@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Resume Scanner</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #013a5c;
+            --secondary-color: #4CAF50;
+            --accent-color: #ff6b6b;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.15);
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            transition: transform 0.3s ease;
+        }
+
+        .container:hover {
+            transform: translateY(-5px);
+        }
+
+        .header {
+            background: var(--primary-color);
+            color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .feature-icon {
+            font-size: 2rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .upload-section {
+            background: var(--primary-color);
+            padding: 2rem;
+            border-radius: 10px;
+            text-align: center;
+            color: white;
+        }
+
+        .file-upload {
+            position: relative;
+            display: inline-block;
+            margin: 2rem 0;
+        }
+
+        .file-upload input[type="file"] {
+            display: none;
+        }
+
+        .upload-btn {
+            background: white;
+            color: var(--primary-color);
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .upload-btn:hover {
+            background: var(--secondary-color);
+            color: white;
+        }
+
+        .submit-btn {
+            background: var(--secondary-color);
+            color: white;
+            padding: 1rem 3rem;
+            border: none;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .submit-btn:hover {
+            background: #45a049;
+            transform: scale(1.05);
+        }
+
+        .result-section {
+            margin-top: 2rem;
+            padding: 2rem;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .result-card {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .skills-list, .education-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .skill-tag {
+            background: var(--primary-color);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            margin: 2rem 0;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 768px) {
+            .features {
+                grid-template-columns: 1fr;
+            }
+            
+            .container {
+                margin: 1rem;
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container header-container">
+        <div class="header">
+            <h1><i class="fas fa-robot"></i> AI Resume Scanner</h1>
+            <p class="lead">Advanced resume analysis powered by artificial intelligence</p>
+        </div>
+
+        <div class="features">
+            <div class="feature-card">
+                <i class="fas fa-layer-group feature-icon"></i>
+                <h3>Categorization</h3>
+                <p>Intelligent resume classification</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-briefcase feature-icon"></i>
+                <h3>Job Matching</h3>
+                <p>Smart job recommendations</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-search feature-icon"></i>
+                <h3>Information Extraction</h3>
+                <p>Detailed resume parsing</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="upload-section">
+            <h2><i class="fas fa-file-upload"></i> Upload Your Resume</h2>
+            <form action="/pred" method="post" enctype="multipart/form-data" id="resumeForm">
+                <div class="file-upload">
+                    <label for="resume" class="upload-btn">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        Choose File
+                    </label>
+                    <input type="file" id="resume" name="resume" accept=".pdf, .txt" required>
+                </div>
+                <div id="file-name" class="text-white mb-3"></div>
+                <button type="submit" class="submit-btn">
+                    <i class="fas fa-paper-plane"></i> Analyze Resume
+                </button>
+            </form>
+        </div>
+
+        <div class="loading">
+            <div class="spinner"></div>
+            <p>Analyzing your resume...</p>
+        </div>
+
+        {% if message %}
+        <div class="alert alert-info mt-4" role="alert">
+            {{message}}
+        </div>
+        {% endif %}
+
+        {% if predicted_category %}
+        <div class="result-section">
+            <div class="result-card">
+                <h3><i class="fas fa-chart-pie"></i> Analysis Results</h3>
+                <div class="row mt-4">
+                    <div class="col-md-6">
+                        <h4><i class="fas fa-tags"></i> Category</h4>
+                        <p class="lead">{{predicted_category}}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <h4><i class="fas fa-bullseye"></i> Recommended Job</h4>
+                        <p class="lead">{{recommended_job}}</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="result-card">
+                <h3><i class="fas fa-user"></i> Personal Information</h3>
+                <div class="row mt-3">
+                    <div class="col-md-4">
+                        <p><strong>Name:</strong> {{name}}</p>
+                    </div>
+                    <div class="col-md-4">
+                        <p><strong>Phone:</strong> {{phone}}</p>
+                    </div>
+                    <div class="col-md-4">
+                        <p><strong>Email:</strong> {{email}}</p>
+                    </div>
+                </div>
+            </div>
+
+            {% if extracted_skills %}
+            <div class="result-card">
+                <h3><i class="fas fa-tools"></i> Skills</h3>
+                <div class="skills-list">
+                    {% for skill in extracted_skills %}
+                    <span class="skill-tag">{{skill}}</span>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+
+            {% if extracted_education %}
+            <div class="result-card">
+                <h3><i class="fas fa-graduation-cap"></i> Education</h3>
+                <div class="education-list">
+                    {% for edu in extracted_education %}
+                    <div class="education-item">{{edu}}</div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.getElementById('resume').addEventListener('change', function(e) {
+            const fileName = e.target.files[0]?.name || 'No file chosen';
+            document.getElementById('file-name').textContent = fileName;
+        });
+
+        document.getElementById('resumeForm').addEventListener('submit', function() {
+            document.querySelector('.loading').style.display = 'block';
+        });
+    </script>
+</body>
+</html>
